@@ -29,6 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
+                android:max="1050"
+                android:min="0"
                 android:rotation="90" />
 
             <TextView
@@ -36,34 +38,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_weight="1"
                 android:text="Down" />
 
             <TextView
-                android:id="@+id/RightEnd"
+                android:id="@+id/LeftEnd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="Right" />
+                android:text="Left" />
 
             <SeekBar
                 android:id="@+id/SidetoSide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
+                android:max="1450"
+                android:min="0"
                 android:rotation="90" />
 
             <TextView
-                android:id="@+id/LeftEnd"
+                android:id="@+id/RightEnd"
                 android:layout_width="wrap_content"
                 android:layout_height="6dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_weight="1"
-                android:text="Left" />
+                android:text="Right" />
 
         </LinearLayout>
         <edu.up.raindrops.DROPS

@@ -17,8 +17,6 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
-import java.util.Random;
-
 public class DROPS extends SurfaceView {
     //Initializes the color of the rain drops
     Paint _blue = new Paint(); //normal blue
@@ -43,6 +41,11 @@ public class DROPS extends SurfaceView {
     //Array to hold all of the colors, so when the loop is called, this can cycle through the colors
     Paint[] colors = new Paint[12];
 
+    //The main raindrop variables
+    int mainDrop;
+    float mainX = randomPositionX();
+    float mainY = randomPositionY();
+
     /**
      * It is the constructor of DROPS. Sets up the surface view, randomizes the number of drops,
      * sets up each color so they show up on screen, and set each color to a place in the array
@@ -61,6 +64,9 @@ public class DROPS extends SurfaceView {
         //sets the number of rain drops drawn, new object in order to use the random class
 
         numberOfDrops = (float) (Math.random()*7) + 5 ;
+
+        //selects the main raindrop
+        selectMainDrop();
 
         //Initialize drawing styles
         _blue.setColor(0xFF14EFFF); //Light Blue
@@ -134,26 +140,52 @@ public class DROPS extends SurfaceView {
         float y = 0; //holds the random y position
 
         //draws the number of drops generated and each with a different color.
+        //Does not draw the main drop so that another method can
         for(int i = 0; i < numberOfDrops; i++){
 
-            x = randomPositionX();
-            y = randomPositionY();
-            drawRainDrop(rain, x, y, colors[i]);
+            if(i == mainDrop){
+                drawMainDrop(rain, i);
+            }else {
+                x = randomPositionX();
+                y = randomPositionY();
+                drawRainDrop(rain, x, y, colors[i]);
+            }
 
         }
 
+
+    }
+
+    //These getters are here so I can use these values in the controller and set the seekbar to this
+    //number in the beginning
+    public int getMainX(){
+        return (int) mainX;
+    }
+
+    public int getMainY(){
+        return (int) mainY;
+    }
+
+    //Since the main drop has its own method, it can be redrawn when the controller wants it to
+    public void drawMainDrop(Canvas rain, int color){
+        drawRainDrop(rain, mainX, mainY, colors[color]);
+    }
+
+    //sets the main raindrop
+    public void selectMainDrop(){
+        mainDrop = (int) (Math.random()*numberOfDrops);
     }
 
     //when called determines the random position X for each raindrop
     public float randomPositionX(){
 
-        return (float) Math.random()*800;
+        return (float) Math.random()*1450;
     }
 
     //when called determines the random position Y for each raindrop
     public float randomPositionY(){
 
-        return (float) Math.random()*800;
+        return (float) Math.random()*1050;
     }
 
     //draws the raindrop with a diameter of 30 dp and a highlight of 10 dp
