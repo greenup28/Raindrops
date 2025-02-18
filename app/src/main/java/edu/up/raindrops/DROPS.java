@@ -13,9 +13,12 @@ import static kotlin.random.RandomKt.Random;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
+
+import androidx.core.graphics.ColorUtils;
 
 public class DROPS extends SurfaceView {
     //Initializes the color of the rain drops
@@ -45,6 +48,13 @@ public class DROPS extends SurfaceView {
     int mainDrop;
     float mainX = randomPositionX();
     float mainY = randomPositionY();
+    int mainBlendedColor;
+
+    //Arrays to hold the x and y positions of the other drops.
+    //If I don't have these, the drops get redrawn in a different position everytime the main drops is moved.
+    float[] dropsX = new float[12];
+
+    float[] dropsY = new float[12];
 
     /**
      * It is the constructor of DROPS. Sets up the surface view, randomizes the number of drops,
@@ -67,6 +77,18 @@ public class DROPS extends SurfaceView {
 
         //selects the main raindrop
         selectMainDrop();
+
+        //selects the random x and y positions for the other drops
+        for(int i = 0; i < numberOfDrops; i++){
+            if(i == mainDrop){
+            }
+            dropsX[i] = randomPositionX();
+        }
+        for(int i = 0; i < numberOfDrops; i++){
+            if(i == mainDrop){
+            }
+            dropsY[i] = randomPositionX();
+        }
 
         //Initialize drawing styles
         _blue.setColor(0xFF14EFFF); //Light Blue
@@ -136,24 +158,54 @@ public class DROPS extends SurfaceView {
     @Override
     public void onDraw(Canvas rain){
 
-        float x = 0; //holds the random x position of the different drops
-        float y = 0; //holds the random y position
-
         //draws the number of drops generated and each with a different color.
         //Does not draw the main drop so that another method can
         for(int i = 0; i < numberOfDrops; i++){
 
             if(i == mainDrop){
-                drawMainDrop(rain, i);
+                drawMainDrop(rain, colors[i]);
             }else {
-                x = randomPositionX();
-                y = randomPositionY();
-                drawRainDrop(rain, x, y, colors[i]);
+                drawRainDrop(rain, dropsX[i], dropsY[i], colors[i]);
             }
 
         }
 
 
+    }
+
+    public void checkTouchingDrops(){
+        //TODO write this method and figure out how to use the blended color
+        for(int i = 0; i < numberOfDrops; i++){
+
+            //Right of the main drop and left of the drop being checked
+            if(((mainX + 30) >= dropsX[i]) && ((mainX + 30) <= (dropsX[i] + 30))){
+
+            }
+            //Left of the main drop and right of the drop being checked
+            else if((mainX <= (dropsX[i] + 30)) && (mainX >= dropsX[i])){
+
+            }
+            //Bottom of the main drop and top of the drop being checked
+            else if(((mainY + 30) >= dropsY[i]) && ((mainY + 30) >= (dropsY[i] + 30))){
+
+            }
+            //Top of the main drop and bottom of the drop being checked
+            else if(((mainY <= (dropsY[i] + 30)) && (mainY <= dropsY[i]))){
+
+            }
+        }
+
+        //blendDropColor();
+    }
+
+    public void blendDropColor(Paint color1, Paint color2){
+
+        //Had to convert the hex code from a string to int.
+        int firstColor = Color.parseColor(String.valueOf(color1));
+        int secondColor = Color.parseColor(String.valueOf(color2));
+
+        //This only took ints so could not use the hex colors.
+        mainBlendedColor = ColorUtils.blendARGB(firstColor, secondColor, 0.5F);
     }
 
     //These getters are here so I can use these values in the controller and set the seekbar to this
@@ -167,8 +219,8 @@ public class DROPS extends SurfaceView {
     }
 
     //Since the main drop has its own method, it can be redrawn when the controller wants it to
-    public void drawMainDrop(Canvas rain, int color){
-        drawRainDrop(rain, mainX, mainY, colors[color]);
+    public void drawMainDrop(Canvas rain, Paint color){
+        drawRainDrop(rain, mainX, mainY, color);
     }
 
     //sets the main raindrop

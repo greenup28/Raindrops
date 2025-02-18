@@ -22,10 +22,12 @@ public class RaindropController implements SeekBar.OnSeekBarChangeListener{
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if(seekBar == seekBar.findViewById(R.id.UpandDown)){
             _rain.mainY = progress;
+            _rain.checkTouchingDrops();
             _rain.invalidate();
         }
         if(seekBar == seekBar.findViewById(R.id.SidetoSide)){
             _rain.mainX = progress;
+            _rain.checkTouchingDrops();
             _rain.invalidate();
         }
     }
